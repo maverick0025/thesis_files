@@ -1,2 +1,0 @@
-spitfire
-third_party
