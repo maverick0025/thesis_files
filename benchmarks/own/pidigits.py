@@ -1,0 +1,68 @@
+import time
+
+PIDIGITS_LEN = 15000
+
+try:
+    from hwcounter import Timer as HWTimer, count, count_end
+    HAS_HWCOUNTER = True
+except ImportError:
+    HAS_HWCOUNTER = False
+    print("Warning: hwcounter not installed. CPU cycles will not be measured.")
+
+
+def pidigits(length):
+    i = k = ns = 0
+    k1 = 1
+    n,a,d,t,u = 1,0,1,0,0
+    while(True):
+        k += 1
+        t = n<<1
+        n *= k
+        a += t
+        k1 += 2
+        a *= k1
+        d *= k1
+        if a >= n:
+            t,u = divmod(n*3 + a,d)
+            u += n
+            if d > u:
+                ns = ns*10 + t
+                i += 1
+                if i % 10 == 0:
+                    ns = 0
+                if i >= length:
+                    break
+                a -= d*t
+                a *= 10
+                n *= 10
+
+def main(n):
+    l = []
+    for i in range(n):
+        t0 = time.time()
+        
+        if HAS_HWCOUNTER:
+            cycle_start = count()
+            
+        pidigits(PIDIGITS_LEN)
+        
+        if HAS_HWCOUNTER:
+            cycle_end = count_end()
+            cycles = cycle_end - cycle_start
+        else:
+            cycles = None
+            
+        t1=time.time()
+        
+        l.append((t1 - t0, cycles))
+    return l
+
+if __name__ == '__main__':
+    import util, optparse
+    parser = optparse.OptionParser(
+        usage="%prog [options]",
+        description="Test the pidigit calculation performance")
+    util.add_standard_options_to(parser)
+    options, args = parser.parse_args()
+
+    util.run_benchmark(options, options.num_runs, main)

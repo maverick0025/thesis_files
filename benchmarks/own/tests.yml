@@ -1,0 +1,41 @@
+binary-trees:
+  run:
+    args: ['13']
+  test:
+    args: ['8']
+
+fannkuch:
+  run:
+    args: ['6']
+  test:
+    args: ['4']
+
+fasta:
+  run:
+    args: ['15000']
+  test:
+    args: ['1000']
+
+float:
+  run:
+    args: ['100']
+  test:
+    args: ['50']
+
+meteor-contest:
+  run:
+    args: ['30']
+  test:
+    args: ['10']
+
+nbody:
+  run:
+    args: ['10000']
+  test:
+    args: ['1000']
+
+spectral-norm:
+  run:
+    args: ['40']
+  test:
+    args: ['20']
